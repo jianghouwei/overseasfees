@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.org.dict.dao.DictMapper">
+
+	<resultMap id="DataResultMap" type="com.org.conf.model.DateModel">
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="count" property="count" jdbcType="BIGINT" />
+	</resultMap>
+
+	<select id="getCountryAll" resultMap="DataResultMap">
+		select
+		country as code,
+		country as name,
+		count(distinct country) as count
+		from
+		operation_conf
+		where 1 = 1
+		GROUP BY country
+	</select>
+
+	<select id="getPriceServiceAll" resultMap="DataResultMap">
+		select
+		price_service as
+		code,
+		price_service as name,
+		count(distinct price_service) as count
+		from
+		operation_conf
+		where 1 = 1
+		GROUP BY price_service
+	</select>
+
+	<select id="getOperatorAll" resultMap="DataResultMap">
+		select
+		operator as code,
+		operator as name,
+		count(distinct operator) as count
+		from
+		operation_conf
+		where 1 = 1
+		GROUP BY operator
+	</select>
+
+
+	<select id="getCountryAllByPriceService" resultMap="DataResultMap"
+		parameterType="java.lang.String">
+		select
+		country as code,
+		country as name,
+		count(distinct
+		country) as count
+		from
+		operation_conf
+		where 1 = 1
+		and price_service =
+		#{priceService,jdbcType=VARCHAR}
+		GROUP BY country
+	</select>
+
+	<select id="getPriceServiceAllByCountry" resultMap="DataResultMap"
+		parameterType="java.lang.String">
+		select
+		price_service as code,
+		price_service as name,
+		count(distinct
+		price_service) as count
+		from operation_conf
+		where 1 = 1
+		and country = #{country,jdbcType=VARCHAR}
+		GROUP BY price_service
+	</select>
+
+	<select id="getOperatorAllByCountryAndPservice" resultMap="DataResultMap"
+		parameterType="com.org.conf.model.OperationConf">
+		select
+		operator as code,
+		operator as name,
+		count(distinct operator) as
+		count
+		from
+		operation_conf
+		where 1 = 1
+		<if test="priceService != null and priceService != ''">
+			and price_service = #{priceService,jdbcType=VARCHAR}
+		</if>
+		<if test="country != null">
+			and country = #{country,jdbcType=VARCHAR}
+		</if>
+		GROUP BY operator
+	</select>
+
+	<!-- 不行就用ID 查询 值 -->
+	<select id="getLocalPriceAllByCtryPserviceAndOperator"
+		resultMap="DataResultMap" parameterType="com.org.conf.model.OperationConf">
+		select
+		id as code,
+		local_price
+		as name,
+		count(distinct operator) as
+		count
+		from
+		operation_conf
+		where
+		price_service =
+		#{priceService,jdbcType=VARCHAR}
+		and country =
+		#{country,jdbcType=VARCHAR}
+		and operator = #{operator,jdbcType=VARCHAR}
+		GROUP BY local_price
+	</select>
+
+	<select id="getRepetCountryAll" resultMap="DataResultMap">
+		select
+		country_id as code,
+		country as name,
+		count(distinct
+		country_id) as count
+		from
+		sales_msg
+		where country_id is not NULL
+		GROUP BY
+		country
+	</select>
+	
+	<select id="getChannelAll" resultMap="DataResultMap">
+		select
+		channel_code as code,
+		channel_name as name,
+		count(distinct
+		channel_code) as count
+		from
+		chanenl_info
+		where channel_code is not NULL
+		GROUP BY
+		channel_code
+	</select>
+	
+	<select id="getPriceInfoAll" resultMap="DataResultMap">
+		select
+		price_id as code,
+		price_name as name,
+		count(distinct
+		price_id) as count
+		from price_info
+		GROUP BY price_id
+	</select>
+	
+</mapper>

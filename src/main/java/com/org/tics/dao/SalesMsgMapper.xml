@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.org.tics.dao.SalesMsgMapper">
+	<resultMap id="BaseResultMap" type="com.org.tics.model.SalesMsg">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="app_id" property="appId" jdbcType="VARCHAR" />
+		<result column="lc" property="lc" jdbcType="VARCHAR" />
+		<result column="brand" property="brand" jdbcType="VARCHAR" />
+		<result column="model" property="model" jdbcType="VARCHAR" />
+		<result column="android_version" property="androidVersion" jdbcType="VARCHAR" />
+		<result column="imei" property="imei" jdbcType="VARCHAR" />
+		<result column="imsi" property="imsi" jdbcType="VARCHAR" />
+		<result column="token" property="token" jdbcType="VARCHAR" />
+		<result column="install_type" property="installType" jdbcType="VARCHAR" />
+		<result column="app_name" property="appName" jdbcType="VARCHAR" />
+		<result column="packagename" property="packagename" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="activit_time" property="activitTime" jdbcType="TIMESTAMP" />
+		<result column="ip" property="ip" jdbcType="VARCHAR" />
+		<result column="country" property="country" jdbcType="VARCHAR" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="region" property="region" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="area_id" property="areaId" jdbcType="VARCHAR" />
+		<result column="country_id" property="countryId" jdbcType="VARCHAR" />
+		<result column="region_id" property="regionId" jdbcType="VARCHAR" />
+		<result column="city_id" property="cityId" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, app_id, lc, brand, model, android_version, imei, imsi, token,
+		install_type, app_name,
+		packagename, version, activit_time, ip, country, area, region, city, area_id,
+		country_id,
+		region_id, city_id
+	</sql>
+
+	<resultMap id="ResultMap" type="com.org.tics.model.SalesMsg">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="app_id" property="appId" jdbcType="VARCHAR" />
+		<result column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+		<result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+		<result column="brand" property="brand" jdbcType="VARCHAR" />
+		<result column="model" property="model" jdbcType="VARCHAR" />
+		<result column="android_version" property="androidVersion" jdbcType="VARCHAR" />
+		<result column="imei" property="imei" jdbcType="VARCHAR" />
+		<result column="imsi" property="imsi" jdbcType="VARCHAR" />
+		<result column="token" property="token" jdbcType="VARCHAR" />
+		<result column="install_type" property="installType" jdbcType="VARCHAR" />
+		<result column="app_name" property="appName" jdbcType="VARCHAR" />
+		<result column="packagename" property="packagename" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="activit_time" property="activitTime" jdbcType="TIMESTAMP" />
+		<result column="country" property="country" jdbcType="VARCHAR" />
+		<result column="country_id" property="countryId" jdbcType="VARCHAR" />
+		<result column="region" property="region" jdbcType="VARCHAR" />
+		<result column="region_id" property="regionId" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="city_id" property="cityId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getSalesMsgListPage" resultMap="ResultMap"
+		parameterType="com.org.tics.model.SalesMsg">
+		select
+		sm.id,
+		sm.activit_time,sm.app_name,sm.app_id,ci.channel_code,ci.channel_name,
+		sm.install_type,
+		sm.app_name,sm.version,sm.brand,sm.model,sm.android_version,
+		sm.imei,sm.imsi,sm.token,sm.country,sm.country_id,
+		sm.region,sm.region_id,sm.city,sm.city_id
+		from sales_msg sm
+		LEFT JOIN chanenl_info ci on ci.channel_code = sm.lc and ci.app_id =
+		sm.app_id
+		where 1 = 1
+		<if test="imei != null and imei != ''">
+			and sm.imei #{imei,jdbcType=VARCHAR}
+		</if>
+		<if test="countryId != null and countryId != ''">
+			and sm.country_id = #{countryId,jdbcType=VARCHAR}
+		</if>
+		<if test="appId != null and appId != ''">
+			and sm.app_id = #{appId,jdbcType=VARCHAR}
+		</if>
+		<if test="lc != null and lc != ''">
+			and sm.lc = #{lc,jdbcType=VARCHAR}
+		</if>
+		<if test="dateStart != null">
+			<![CDATA[ and sm.activit_time >= #{dateStart,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="dateEnd != null">
+			<![CDATA[ and sm.activit_time <= #{dateEnd,jdbcType=VARCHAR}]]>
+		</if>
+		order by activit_time desc
+		<if test="showCount != null and currentResult != null">
+			limit
+			#{currentResult,jdbcType=INTEGER},#{showCount,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="getSalesMsgCountPage" resultType="java.lang.Long"
+		parameterType="com.org.tics.model.SalesMsg">
+		select
+		count(sm.id)
+		from sales_msg sm
+		where 1 = 1
+		<if test="imei != null and imei != ''">
+			and sm.imei #{imei,jdbcType=VARCHAR}
+		</if>
+		<if test="countryId != null and countryId != ''">
+			and sm.country_id = #{countryId,jdbcType=VARCHAR}
+		</if>
+		<if test="appId != null and appId != ''">
+			and sm.app_id = #{appId,jdbcType=VARCHAR}
+		</if>
+		<if test="lc != null and lc != ''">
+			and sm.lc = #{lc,jdbcType=VARCHAR}
+		</if>
+		<if test="dateStart != null">
+			<![CDATA[ and sm.activit_time >= #{dateStart,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="dateEnd != null">
+			<![CDATA[ and sm.activit_time <= #{dateEnd,jdbcType=VARCHAR}]]>
+		</if>
+	</select>
+	
+	<select id="exportSalesMsgList" resultMap="ResultMap"
+		parameterType="com.org.tics.model.SalesMsg">
+		select
+		sm.id,
+		sm.activit_time,sm.app_name,sm.app_id,ci.channel_code,ci.channel_name,
+		sm.install_type,
+		sm.app_name,sm.version,sm.brand,sm.model,sm.android_version,
+		sm.imei,sm.imsi,sm.token,sm.country,sm.country_id,
+		sm.region,sm.region_id,sm.city,sm.city_id
+		from sales_msg sm
+		LEFT JOIN chanenl_info ci on ci.channel_code = sm.lc and ci.app_id =
+		sm.app_id
+		where 1 = 1
+		<if test="imei != null and imei != ''">
+			and sm.imei #{imei,jdbcType=VARCHAR}
+		</if>
+		<if test="countryId != null and countryId != ''">
+			and sm.country_id = #{countryId,jdbcType=VARCHAR}
+		</if>
+		<if test="appId != null and appId != ''">
+			and sm.app_id = #{appId,jdbcType=VARCHAR}
+		</if>
+		<if test="lc != null and lc != ''">
+			and sm.lc = #{lc,jdbcType=VARCHAR}
+		</if>
+		<if test="dateStart != null">
+			<![CDATA[ and sm.activit_time >= #{dateStart,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="dateEnd != null">
+			<![CDATA[ and sm.activit_time <= #{dateEnd,jdbcType=VARCHAR}]]>
+		</if>
+		order by activit_time desc
+	</select>
+	
+	
+	<resultMap id="DataResultMap" type="com.org.conf.model.DateModel">
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="count" property="count" jdbcType="BIGINT" />
+	</resultMap>
+	
+	<select id="getRepetCountryAll" resultMap="DataResultMap"
+		parameterType="java.lang.String">
+		select
+		country_id as code,
+		country as name,
+		count(distinct country_id) as count
+		from
+		sales_msg
+		where country_id is not NULL
+		GROUP BY country
+	</select>
+</mapper>

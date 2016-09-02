@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.org.system.dao.UserInfoMapper">
+
+
+	<resultMap id="BaseResultMap" type="com.org.system.model.UserInfo">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="login_name" property="loginName" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="tel_name" property="telName" jdbcType="VARCHAR" />
+		<result column="salt" property="salt" jdbcType="VARCHAR" />
+		<result column="telphone" property="telphone" jdbcType="VARCHAR" />
+		<result column="qq" property="qq" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="company_name" property="companyName" jdbcType="VARCHAR" />
+		<result column="user_type" property="userType" jdbcType="BIGINT" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="BIGINT" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="update_user" property="updateUser" jdbcType="BIGINT" />
+	</resultMap>
+
+	<resultMap type="com.org.system.model.UserInfo" id="UserInfoTypeResultMap"
+		extends="BaseResultMap">
+		<association property="userTypeModel" javaType="com.org.system.model.UserType">
+			<id column="id" property="id" jdbcType="BIGINT" />
+			<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+			<result column="type_code" property="typeCode" jdbcType="VARCHAR" />
+			<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+			<result column="create_user" property="createUser" jdbcType="BIGINT" />
+		</association>
+	</resultMap>
+	
+	<resultMap type="com.org.system.model.UserInfo" id="UserInfoAllResultMap" extends="BaseResultMap">
+			<result column="roleId" property="roleId" jdbcType="BIGINT" />
+			<result column="roleName" property="roleName" jdbcType="VARCHAR" />
+			<result column="userTypeId" property="userTypeId" jdbcType="BIGINT" />
+			<result column="userTypeName" property="userTypeName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, login_name, name, password, tel_name, salt, telphone,
+		qq, email,
+		company_name,
+		user_type, create_time, create_user,
+		update_time, update_user
+	</sql>
+
+	<sql id="UserType_Column_List">
+		id, type_name, type_code, create_time, create_user
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from user_info
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		user_info
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.org.system.model.UserInfo" useGeneratedKeys="true"  keyProperty="id">
+		insert into user_info (id,
+		login_name, name,
+		password, tel_name, salt,
+		telphone, qq, email,
+		company_name, user_type, create_time,
+		create_user, update_time,
+		update_user
+		)
+		values (#{id,jdbcType=BIGINT},
+		#{loginName,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR}, #{telName,jdbcType=VARCHAR},
+		#{salt,jdbcType=VARCHAR},
+		#{telphone,jdbcType=VARCHAR},
+		#{qq,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{companyName,jdbcType=VARCHAR}, #{userType,jdbcType=BIGINT},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{createUser,jdbcType=BIGINT},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{updateUser,jdbcType=BIGINT}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.org.system.model.UserInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into user_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="loginName != null">
+				login_name,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="telName != null">
+				tel_name,
+			</if>
+			<if test="salt != null">
+				salt,
+			</if>
+			<if test="telphone != null">
+				telphone,
+			</if>
+			<if test="qq != null">
+				qq,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="companyName != null">
+				company_name,
+			</if>
+			<if test="userType != null">
+				user_type,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="loginName != null">
+				#{loginName,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="telName != null">
+				#{telName,jdbcType=VARCHAR},
+			</if>
+			<if test="salt != null">
+				#{salt,jdbcType=VARCHAR},
+			</if>
+			<if test="telphone != null">
+				#{telphone,jdbcType=VARCHAR},
+			</if>
+			<if test="qq != null">
+				#{qq,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="companyName != null">
+				#{companyName,jdbcType=VARCHAR},
+			</if>
+			<if test="userType != null">
+				#{userType,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=BIGINT},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				#{updateUser,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.org.system.model.UserInfo">
+		update user_info
+		<set>
+			<if test="loginName != null">
+				login_name = #{loginName,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="telName != null">
+				tel_name = #{telName,jdbcType=VARCHAR},
+			</if>
+			<if test="salt != null">
+				salt = #{salt,jdbcType=VARCHAR},
+			</if>
+			<if test="telphone != null">
+				telphone = #{telphone,jdbcType=VARCHAR},
+			</if>
+			<if test="qq != null">
+				qq = #{qq,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="companyName != null">
+				company_name = #{companyName,jdbcType=VARCHAR},
+			</if>
+			<if test="userType != null">
+				user_type = #{userType,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=BIGINT},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				update_user = #{updateUser,jdbcType=BIGINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.org.system.model.UserInfo">
+		update user_info
+		set login_name = #{loginName,jdbcType=VARCHAR},
+		name =
+		#{name,jdbcType=VARCHAR},
+		password = #{password,jdbcType=VARCHAR},
+		tel_name = #{telName,jdbcType=VARCHAR},
+		salt =
+		#{salt,jdbcType=VARCHAR},
+		telphone = #{telphone,jdbcType=VARCHAR},
+		qq =
+		#{qq,jdbcType=VARCHAR},
+		email = #{email,jdbcType=VARCHAR},
+		company_name
+		= #{companyName,jdbcType=VARCHAR},
+		user_type =
+		#{userType,jdbcType=BIGINT},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP },
+		create_user =
+		#{createUser,jdbcType=BIGINT},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
+		update_user =
+		#{updateUser,jdbcType=BIGINT}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<select id="selectByLoginName" resultMap="UserInfoTypeResultMap"
+		parameterType="java.lang.String">
+		select
+		ui.id, ui.login_name, ui.name, ui.password, ui.salt, ui.tel_name, ui.telphone, ui.qq,
+		ui.email,
+		ui.company_name, ui.user_type,
+		ui.create_time, ui.create_user, ui.update_time,
+		ui.update_user,
+		ut.id, ut.type_name, ut.type_code, ut.create_time, ut.create_user
+		from user_info ui,
+		user_type ut
+		where
+		ui.user_type = ut.id
+		and login_name = #{loginName,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectAllByUserId" resultMap="UserInfoAllResultMap"
+		parameterType="java.lang.Long">
+		select
+		ui.id, ui.login_name, ui.name, ui.password, ui.salt, ui.tel_name, ui.telphone, ui.qq,
+		ui.email,
+		ui.company_name, ui.user_type,
+		ui.create_time, ui.create_user, ui.update_time,
+		ui.update_user,
+		ut.id, ut.type_name, ut.type_code, ut.create_time, ut.create_user,
+		r.id as roleId, 
+		r.role_name as roleName,  
+		ut.id as userTypeId, 
+		ut.type_name as userTypeName
+		from user_info ui
+		left join user_type ut on ut.id = ui.user_type
+		left join user_role ur on ur.user_id = ui.id
+		left join role r on r.id = ur.role_id
+		where ui.id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<select id="selectCountByLoginName" resultType="java.lang.Long"
+		parameterType="java.lang.String">
+		select
+		count(login_name)
+		from user_info
+		where login_name =
+		#{loginName,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectCountByTelPhone" resultType="java.lang.Long"
+		parameterType="java.lang.String">
+		select
+		count(telphone)
+		from user_info
+		where telphone =
+		#{telphone,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getUserListPage" resultMap="UserInfoAllResultMap"
+		parameterType="com.org.system.model.UserInfo">
+		select 
+		ui.id, ui.login_name, ui.name, ui.password, ui.salt, ui.tel_name, ui.telphone, ui.qq,
+		ui.email,
+		ui.company_name, ui.user_type,
+		ui.create_time, ui.create_user, ui.update_time,
+		ui.update_user,
+		ut.id, ut.type_name, ut.type_code, ut.create_time, ut.create_user,
+		r.id as roleId, 
+		r.role_name as roleName,  
+		ut.id as userTypeId, 
+		ut.type_name as userTypeName
+		from user_info ui
+		left join user_type ut on ut.id = ui.user_type
+		left join user_role ur on ur.user_id = ui.id
+		left join role r on r.id = ur.role_id
+		where 1=1
+		<if test="roleId != null and roleId != ''">
+			and r.id = #{roleId,jdbcType=VARCHAR}
+		</if>
+		<if test="userType != null and userType != ''">
+			user_type = #{userType,jdbcType=BIGINT}
+		</if>
+			order by ut.create_time desc
+		<if test="showCount != null and currentResult != null">
+			limit #{currentResult,jdbcType=INTEGER},#{showCount,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<select id="getUserCountPage" resultType="java.lang.Long"
+		parameterType="com.org.system.model.UserInfo">
+		select 
+		count(ui.id)
+		from user_info ui
+		left join user_type ut on ut.id = ui.user_type
+		left join user_role ur on ur.user_id = ui.id
+		left join role r on r.id = ur.role_id
+		where 1=1
+		<if test="roleId != null and roleId != ''">
+			and r.id = #{roleId,jdbcType=VARCHAR}
+		</if>
+		<if test="userTypeId != null and userTypeId != ''">
+			and ut.id = #{userTypeId,jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<select id="getUserInfoByUserType" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from user_info
+		where user_type = #{userType,jdbcType=BIGINT}
+	</select>
+	<select id="getUserInfoList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_info
+	</select>
+</mapper>

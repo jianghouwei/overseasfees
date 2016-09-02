@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.org.conf.dao.PriceInfoMapper">
+	<resultMap id="BaseResultMap" type="com.org.conf.model.PriceInfo">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="app_id" property="appId" jdbcType="VARCHAR" />
+		<result column="price_id" property="priceId" jdbcType="VARCHAR" />
+		<result column="price_name" property="priceName" jdbcType="VARCHAR" />
+		<result column="price_briefing" property="priceBriefing" jdbcType="VARCHAR" />
+		<result column="price_type" property="priceType" jdbcType="VARCHAR" />
+		<result column="price_service" property="priceService" jdbcType="VARCHAR" />
+		<result column="country" property="country" jdbcType="VARCHAR" />
+		<result column="operator" property="operator" jdbcType="VARCHAR" />
+		<result column="qc_id" property="qcId" jdbcType="BIGINT" />
+		<result column="global_price" property="globalPrice" jdbcType="DECIMAL" />
+		<result column="local_price" property="localPrice" jdbcType="DECIMAL" />
+		<result column="keyword" property="keyword" jdbcType="DECIMAL" />
+		<result column="mcc" property="mcc" jdbcType="VARCHAR" />
+		<result column="mnc" property="mnc" jdbcType="VARCHAR" />
+		<result column="short_code" property="shortCode" jdbcType="VARCHAR" />
+		<result column="is_tip" property="isTip" jdbcType="VARCHAR" />
+		<result column="is_param" property="isParam" jdbcType="VARCHAR" />
+		<result column="params" property="params" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="update_user" property="updateUser" jdbcType="BIGINT" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="BIGINT" />
+	</resultMap>
+	
+	
+	<resultMap id="AppNameResultMap" type="com.org.conf.model.PriceInfo" extends="BaseResultMap">
+		<result column="app_name" property="appName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		pi.id, pi.app_id, pi.price_id, pi.price_name, pi.qc_id,
+		pi.price_briefing, pi.price_type,pi.global_price,
+		oc.price_service, oc.country,
+		oc.operator, 
+		oc.local_price,
+    	oc.keyword,oc.mcc,oc.mnc,oc.short_code,
+    	pi.is_tip, pi.is_param, pi.params, pi.status, pi.update_time,
+		pi.update_user,
+		pi.create_time, pi.create_user
+		from price_info pi
+		left join  operation_conf oc on oc.id = pi.qc_id
+		where pi.id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from price_info
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insert" parameterType="com.org.conf.model.PriceInfo">
+		insert into price_info (id, app_id, price_id,
+		price_name, price_briefing, price_type,
+		qc_id,
+		global_price, is_tip, is_param,
+		params, status, update_time,
+		update_user, create_time, create_user
+		)
+		values (#{id,jdbcType=BIGINT}, #{appId,jdbcType=VARCHAR},
+		#{priceId,jdbcType=VARCHAR},
+		#{priceName,jdbcType=VARCHAR}, #{priceBriefing,jdbcType=VARCHAR}, #{priceType,jdbcType=VARCHAR},
+		#{qcId,jdbcType=BIGINT},
+		#{globalPrice,jdbcType=DECIMAL}, #{isTip,jdbcType=VARCHAR}, #{isParam,jdbcType=VARCHAR},
+		#{params,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{updateUser,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=BIGINT}
+		)
+	</insert>
+	
+	<insert id="insertSelective" parameterType="com.org.conf.model.PriceInfo">
+		insert into price_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="appId != null">
+				app_id,
+			</if>
+			<if test="priceId != null">
+				price_id,
+			</if>
+			<if test="priceName != null">
+				price_name,
+			</if>
+			<if test="priceBriefing != null">
+				price_briefing,
+			</if>
+			<if test="priceType != null">
+				price_type,
+			</if>
+			<if test="qcId != null">
+				qc_id,
+			</if>
+			<if test="globalPrice != null">
+				global_price,
+			</if>
+			<if test="isTip != null">
+				is_tip,
+			</if>
+			<if test="isParam != null">
+				is_param,
+			</if>
+			<if test="params != null">
+				params,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="appId != null">
+				#{appId,jdbcType=VARCHAR},
+			</if>
+			<if test="priceId != null">
+				#{priceId,jdbcType=VARCHAR},
+			</if>
+			<if test="priceName != null">
+				#{priceName,jdbcType=VARCHAR},
+			</if>
+			<if test="priceBriefing != null">
+				#{priceBriefing,jdbcType=VARCHAR},
+			</if>
+			<if test="priceType != null">
+				#{priceType,jdbcType=VARCHAR},
+			</if>
+			<if test="qcId != null">
+				#{qcId,jdbcType=BIGINT},
+			</if>
+			<if test="globalPrice != null">
+				#{globalPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="isTip != null">
+				#{isTip,jdbcType=VARCHAR},
+			</if>
+			<if test="isParam != null">
+				#{isParam,jdbcType=VARCHAR},
+			</if>
+			<if test="params != null">
+				#{params,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				#{updateUser,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.org.conf.model.PriceInfo">
+		update price_info
+		<set>
+			<if test="appId != null">
+				app_id = #{appId,jdbcType=VARCHAR},
+			</if>
+			<if test="priceId != null">
+				price_id = #{priceId,jdbcType=VARCHAR},
+			</if>
+			<if test="priceName != null">
+				price_name = #{priceName,jdbcType=VARCHAR},
+			</if>
+			<if test="priceBriefing != null">
+				price_briefing = #{priceBriefing,jdbcType=VARCHAR},
+			</if>
+			<if test="priceType != null">
+				price_type = #{priceType,jdbcType=VARCHAR},
+			</if>
+			<if test="qcId != null">
+				qc_id = #{qcId,jdbcType=BIGINT},
+			</if>
+			<if test="globalPrice != null">
+				global_price = #{globalPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="isTip != null">
+				is_tip = #{isTip,jdbcType=VARCHAR},
+			</if>
+			<if test="isParam != null">
+				is_param = #{isParam,jdbcType=VARCHAR},
+			</if>
+			<if test="params != null">
+				params = #{params,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				update_user = #{updateUser,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=BIGINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.org.conf.model.PriceInfo">
+		update price_info
+		set app_id = #{appId,jdbcType=VARCHAR},
+		price_id = #{priceId,jdbcType=VARCHAR},
+		price_name = #{priceName,jdbcType=VARCHAR},
+		price_briefing = #{priceBriefing,jdbcType=VARCHAR},
+		price_type = #{priceType,jdbcType=VARCHAR},
+		qc_id = #{qcId,jdbcType=BIGINT},
+		global_price = #{globalPrice,jdbcType=DECIMAL},
+		is_tip = #{isTip,jdbcType=VARCHAR},
+		is_param = #{isParam,jdbcType=VARCHAR},
+		params = #{params,jdbcType=VARCHAR},
+		status = #{status,jdbcType=VARCHAR},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		update_user = #{updateUser,jdbcType=BIGINT},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		create_user = #{createUser,jdbcType=BIGINT}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="getPriceInfoListPage" resultMap="AppNameResultMap"
+		parameterType="com.org.conf.model.PriceInfo">
+		select
+		pi.id, pi.app_id, pi.price_id, pi.price_name, 
+		pi.price_briefing, pi.price_type,pi.global_price,
+		oc.price_service, oc.country,
+		oc.operator, oc.local_price,
+    	oc.keyword,oc.mcc,oc.mnc,oc.short_code,
+    	pi.is_tip, pi.is_param, pi.params, pi.status, pi.update_time,
+		pi.update_user,
+		pi.create_time, pi.create_user,
+		ai.app_name
+		from price_info pi
+		left join app_info ai on ai.app_id = pi.app_id
+		left join  operation_conf oc on oc.id = pi.qc_id
+		where 1=1
+		<if test="appId != null and appId != ''">
+			and pi.app_id = #{appId,jdbcType=VARCHAR}
+		</if>
+		<if test="priceService != null and priceService != ''">
+			and pi.price_service = #{priceService,jdbcType=VARCHAR}
+		</if>
+		<if test="country != null and country != ''">
+			and pi.country = #{country,jdbcType=VARCHAR}
+		</if>
+		<if test="operator != null and operator != ''">
+			and pi.operator = #{operator,jdbcType=VARCHAR}
+		</if>
+		<if test="showCount != null and currentResult != null">
+			limit
+			#{currentResult,jdbcType=INTEGER},#{showCount,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="getPriceInfoCountPage" resultType="java.lang.Long"
+		parameterType="com.org.conf.model.PriceInfo">
+		select
+		count(pi.id)
+		from price_info pi
+		left join app_info ai on ai.app_id = pi.app_id 
+		left join  operation_conf oc on oc.id = pi.qc_id
+		where 1 = 1
+		<if test="appId != null and appId != ''">
+			and pi.app_id = #{appId,jdbcType=VARCHAR}
+		</if>
+		<if test="priceService != null and priceService != ''">
+			and pi.price_service = #{priceService,jdbcType=VARCHAR}
+		</if>
+		<if test="country != null and country != ''">
+			and pi.country = #{country,jdbcType=VARCHAR}
+		</if>
+		<if test="operator != null and operator != ''">
+			and pi.operator = #{operator,jdbcType=VARCHAR}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.org.tics.dao.GmobiSmsMapper" >
+  <resultMap id="BaseResultMap" type="com.org.tics.model.GmobiSms" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="network" property="network" jdbcType="VARCHAR" />
+    <result column="msn" property="msn" jdbcType="VARCHAR" />
+    <result column="msg_f" property="msgF" jdbcType="VARCHAR" />
+    <result column="sno" property="sno" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="channel_id" property="channelId" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="service" property="service" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
+    <result column="msisdn" property="msisdn" jdbcType="VARCHAR" />
+    <result column="msg_t" property="msgT" jdbcType="VARCHAR" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="app_id" property="appId" jdbcType="VARCHAR" />
+    <result column="price_no" property="priceNo" jdbcType="VARCHAR" />
+    <result column="price_local" property="priceLocal" jdbcType="VARCHAR" />
+    <result column="imsi" property="imsi" jdbcType="VARCHAR" />
+    <result column="imei" property="imei" jdbcType="VARCHAR" />
+    <result column="mo_no" property="moNo" jdbcType="VARCHAR" />
+    <result column="errmsg" property="errmsg" jdbcType="VARCHAR" />
+    <result column="over_status" property="overStatus" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, operator, network, msn, msg_f, sno, uid, channel_id, country, service, date, 
+    msisdn, msg_t, keyword, app_id, price_no, price_local, imsi, imei, mo_no, errmsg, 
+    over_status, status, create_time, update_time
+  </sql>
+  
+  <resultMap id="ResultMap" type="com.org.tics.model.GmobiSms" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="app_id" property="appId" jdbcType="VARCHAR" />
+    <result column="app_name" property="appName" jdbcType="VARCHAR" />
+    <result column="imsi" property="imsi" jdbcType="VARCHAR" />
+    <result column="imei" property="imei" jdbcType="VARCHAR" />
+    <result column="channel_id" property="channelId" jdbcType="VARCHAR" />
+    <result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+    <result column="price_no" property="priceNo" jdbcType="VARCHAR" />
+    <result column="price_name" property="priceName" jdbcType="VARCHAR" />
+    <result column="mo_no" property="moNo" jdbcType="VARCHAR" />
+    <result column="local_price" property="localPrice" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="network" property="network" jdbcType="VARCHAR" />
+    <result column="msn" property="msn" jdbcType="VARCHAR" />
+    <result column="msg_f" property="msgF" jdbcType="VARCHAR" />
+    <result column="short_code" property="shortCode" jdbcType="VARCHAR" />
+    <result column="mcc" property="mcc" jdbcType="VARCHAR" />
+    <result column="price_service" property="priceService" jdbcType="VARCHAR" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="mnc" property="mnc" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getGmobiSmsListPage" resultMap="ResultMap"
+		parameterType="com.org.tics.model.GmobiSms">
+		select gs.id,
+		gs.create_time,gs.app_id,ai.app_name,gs.imei,gs.imsi,gs.channel_id,cio.channel_name,
+		gs.price_no , pio.price_name,gs.mo_no,oc.local_price,gs.uid,gs.date,
+		oc.operator,gs.network,gs.msn,gs.msg_f,oc.short_code,oc.mcc,oc.price_service,
+		gs.keyword,gs.status,oc.mnc,oc.country
+		FROM gmobi_sms gs
+		LEFT JOIN price_info pio on pio.price_id = gs.price_no 
+		LEFT JOIN app_info ai on ai.app_id = gs.app_id
+		LEFT JOIN chanenl_info cio on cio.channel_code = gs.channel_id
+		LEFT JOIN (
+		select price_service,country,operator,short_code,local_price,mcc,mnc,keyword from operation_conf
+		GROUP BY price_service,country,operator ,short_code ,keyword
+		) oc ON oc.country = gs.country and oc.operator = gs.operator and oc .short_code = gs.sno and oc.keyword = gs.keyword
+		where 1 = 1
+		<if test="country != null and country != ''">
+			and gs.country #{country,jdbcType=VARCHAR}
+		</if>
+		<if test="appId != null and appId != ''">
+			and gs.app_id = #{appId,jdbcType=VARCHAR}
+		</if>
+		<if test="channelId != null and channelId != ''">
+			and gs.channel_id = #{channelId,jdbcType=VARCHAR}
+		</if>
+		<if test="priceNo != null and priceNo != ''">
+			and gs.price_no = #{priceNo,jdbcType=VARCHAR}
+		</if>
+		<if test="dateStart != null">
+			<![CDATA[ and gs.create_time >= #{dateStart,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="dateEnd != null">
+			<![CDATA[ and gs.create_time <= #{dateEnd,jdbcType=VARCHAR}]]>
+		</if>
+		order by gs.create_time desc
+		<if test="showCount != null and currentResult != null">
+			limit
+			#{currentResult,jdbcType=INTEGER},#{showCount,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="getGmobiSmsCountPage" resultType="java.lang.Long"
+		parameterType="com.org.tics.model.GmobiSms">
+		select
+		count(gs.id)
+		FROM gmobi_sms gs
+		where 1 = 1
+		<if test="country != null and country != ''">
+			and gs.country #{country,jdbcType=VARCHAR}
+		</if>
+		<if test="appId != null and appId != ''">
+			and gs.app_id = #{appId,jdbcType=VARCHAR}
+		</if>
+		<if test="channelId != null and channelId != ''">
+			and gs.channel_id = #{channelId,jdbcType=VARCHAR}
+		</if>
+		<if test="priceNo != null and priceNo != ''">
+			and gs.price_no = #{priceNo,jdbcType=VARCHAR}
+		</if>
+		<if test="dateStart != null">
+			<![CDATA[ and gs.create_time >= #{dateStart,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="dateEnd != null">
+			<![CDATA[ and gs.create_time <= #{dateEnd,jdbcType=VARCHAR}]]>
+		</if>
+	</select>
+	
+	
+	<select id="exportGmobiSmsList" resultMap="ResultMap"
+		parameterType="com.org.tics.model.GmobiSms">
+		select gs.id,
+		gs.create_time,gs.app_id,ai.app_name,gs.imei,gs.imsi,gs.channel_id,cio.channel_name,
+		gs.price_no , pio.price_name,gs.mo_no,oc.local_price,gs.uid,gs.date,
+		oc.operator,gs.network,gs.msn,gs.msg_f,oc.short_code,oc.mcc,oc.price_service,
+		gs.keyword,gs.status,oc.mnc,oc.country
+		FROM gmobi_sms gs
+		LEFT JOIN price_info pio on pio.price_id = gs.price_no 
+		LEFT JOIN app_info ai on ai.app_id = gs.app_id
+		LEFT JOIN chanenl_info cio on cio.channel_code = gs.channel_id
+		LEFT JOIN (
+		select price_service,country,operator,short_code,local_price,mcc,mnc,keyword from operation_conf
+		GROUP BY price_service,country,operator ,short_code ,keyword
+		) oc ON oc.country = gs.country and oc.operator = gs.operator and oc .short_code = gs.sno and oc.keyword = gs.keyword
+		where 1 = 1
+		<if test="country != null and country != ''">
+			and gs.country #{country,jdbcType=VARCHAR}
+		</if>
+		<if test="appId != null and appId != ''">
+			and gs.app_id = #{appId,jdbcType=VARCHAR}
+		</if>
+		<if test="channelId != null and channelId != ''">
+			and gs.channel_id = #{channelId,jdbcType=VARCHAR}
+		</if>
+		<if test="priceNo != null and priceNo != ''">
+			and gs.price_no = #{priceNo,jdbcType=VARCHAR}
+		</if>
+		<if test="dateStart != null">
+			<![CDATA[ and gs.create_time >= #{dateStart,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="dateEnd != null">
+			<![CDATA[ and gs.create_time <= #{dateEnd,jdbcType=VARCHAR}]]>
+		</if>
+	</select>
+  
+</mapper>

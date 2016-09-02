@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.org.conf.dao.AppInfoMapper">
+	<resultMap id="BaseResultMap" type="com.org.conf.model.AppInfo">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="app_id" property="appId" jdbcType="VARCHAR" />
+		<result column="pkg_name" property="pkgName" jdbcType="VARCHAR" />
+		<result column="app_name" property="appName" jdbcType="VARCHAR" />
+		<result column="app_briefing" property="appBriefing" jdbcType="VARCHAR" />
+		<result column="app_user" property="appUser" jdbcType="BIGINT" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="BIGINT" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="update_user" property="updateUser" jdbcType="BIGINT" />
+	</resultMap>
+	
+	<resultMap type="com.org.conf.model.AppInfo" id="ChannelResultMap" extends="BaseResultMap">
+			<result column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+			<result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+			<result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, app_id, pkg_name, app_name, app_briefing, app_user,
+		create_time,
+		create_user,
+		update_time, update_user
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from app_info
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		app_info
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.org.conf.model.AppInfo">
+		insert into app_info (id,
+		app_id, pkg_name,
+		app_name, app_briefing, app_user,
+		create_time,
+		create_user, update_time,
+		update_user)
+		values (#{id,jdbcType=BIGINT},
+		#{appId,jdbcType=VARCHAR},
+		#{pkgName,jdbcType=VARCHAR},
+		#{appName,jdbcType=VARCHAR}, #{appBriefing,jdbcType=VARCHAR},
+		#{appUser,jdbcType=BIGINT},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{createUser,jdbcType=BIGINT},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{updateUser,jdbcType=BIGINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.org.conf.model.AppInfo">
+		insert into app_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="appId != null">
+				app_id,
+			</if>
+			<if test="pkgName != null">
+				pkg_name,
+			</if>
+			<if test="appName != null">
+				app_name,
+			</if>
+			<if test="appBriefing != null">
+				app_briefing,
+			</if>
+			<if test="appUser != null">
+				app_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="appId != null">
+				#{appId,jdbcType=VARCHAR},
+			</if>
+			<if test="pkgName != null">
+				#{pkgName,jdbcType=VARCHAR},
+			</if>
+			<if test="appName != null">
+				#{appName,jdbcType=VARCHAR},
+			</if>
+			<if test="appBriefing != null">
+				#{appBriefing,jdbcType=VARCHAR},
+			</if>
+			<if test="appUser != null">
+				#{appUser,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=BIGINT},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				#{updateUser,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.org.conf.model.AppInfo">
+		update app_info
+		<set>
+			<if test="appId != null">
+				app_id = #{appId,jdbcType=VARCHAR},
+			</if>
+			<if test="pkgName != null">
+				pkg_name = #{pkgName,jdbcType=VARCHAR},
+			</if>
+			<if test="appName != null">
+				app_name = #{appName,jdbcType=VARCHAR},
+			</if>
+			<if test="appBriefing != null">
+				app_briefing = #{appBriefing,jdbcType=VARCHAR},
+			</if>
+			<if test="appUser != null">
+				app_user = #{appUser,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=BIGINT},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				update_user = #{updateUser,jdbcType=BIGINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="getAppInfoListPage" resultMap="ChannelResultMap"
+		parameterType="com.org.conf.model.AppInfo">
+		select
+		ai.id, ai.app_id, ai.pkg_name, ai.app_name, 
+		ai.app_briefing, ai.app_user,
+		ai.create_time, ai.create_user,
+		ai.update_time,
+		ai.update_user, ci.channel_code,
+		ci.channel_name,
+		ui.name
+		from app_info ai
+		LEFT JOIN user_info ui on ui.id = ai.app_user
+		LEFT OUTER JOIN chanenl_info ci on ci.app_id = ai.app_id
+		where 1 = 1
+		<if test="pkgName != null and pkgName != ''">
+			and ai.pkg_name like CONCAT(CONCAT('%', #{pkgName}), '%')
+		</if>
+		<if test="appId != null and appId != ''">
+			and ai.app_id = #{appId,jdbcType=VARCHAR}
+		</if>
+		<if test="appUser != null and appUser != ''">
+			and ai.app_user = #{appUser,jdbcType=BIGINT}
+		</if>
+		order by create_time desc
+		<if test="showCount != null and currentResult != null">
+			limit
+			#{currentResult,jdbcType=INTEGER},#{showCount,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="getAppInfoCountPage" resultType="java.lang.Long"
+		parameterType="com.org.conf.model.AppInfo">
+		select
+		count(ai.id)
+		from app_info ai
+		LEFT JOIN user_info ui on ui.id = ai.app_user
+		LEFT OUTER JOIN chanenl_info ci on ci.app_id = ai.app_id
+		where 1 = 1
+		<if test="pkgName != null and pkgName != ''">
+			and ai.pkg_name like CONCAT(CONCAT('%', #{pkgName}), '%')
+		</if>
+		<if test="appId != null and appId != ''">
+			and ai.app_id = #{appId,jdbcType=VARCHAR}
+		</if>
+		<if test="appUser != null and appUser != ''">
+			and ai.app_user = #{appUser,jdbcType=BIGINT}
+		</if>
+	</select>
+
+	<select id="getAllAppInfo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from app_info
+	</select>
+
+</mapper>

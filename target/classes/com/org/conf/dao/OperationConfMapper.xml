@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.org.conf.dao.OperationConfMapper">
+	<resultMap id="BaseResultMap" type="com.org.conf.model.OperationConf">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="price_service" property="priceService"
+			jdbcType="VARCHAR" />
+		<result column="country" property="country" jdbcType="VARCHAR" />
+		<result column="operator" property="operator" jdbcType="VARCHAR" />
+		<result column="short_code" property="shortCode" jdbcType="VARCHAR" />
+		<result column="local_price" property="localPrice" jdbcType="DECIMAL" />
+		<result column="mcc" property="mcc" jdbcType="VARCHAR" />
+		<result column="mnc" property="mnc" jdbcType="VARCHAR" />
+		<result column="keyword" property="keyword" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="update_user" property="updateUser" jdbcType="BIGINT" />
+	</resultMap>
+
+	<resultMap id="DataResultMap" type="com.org.conf.model.DateModel">
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="count" property="count" jdbcType="BIGINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, price_service, country, operator, short_code,
+		local_price, mcc, mnc,
+		keyword,
+		create_user, create_time, update_time,
+		update_user
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from operation_conf
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		operation_conf
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.org.conf.model.OperationConf">
+		insert into operation_conf
+		(id, price_service, country,
+		operator, short_code, local_price,
+		mcc,
+		mnc, keyword,
+		create_user, create_time, update_time,
+		update_user)
+		values
+		(#{id,jdbcType=BIGINT}, #{priceService,jdbcType=VARCHAR},
+		#{country,jdbcType=VARCHAR},
+		#{operator,jdbcType=VARCHAR},
+		#{shortCode,jdbcType=VARCHAR},
+		#{localPrice,jdbcType=DECIMAL},
+		#{mcc,jdbcType=VARCHAR},
+		#{mnc,jdbcType=VARCHAR},
+		#{keyword,jdbcType=VARCHAR},
+		#{createUser,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+		#{updateUser,jdbcType=BIGINT})
+	</insert>
+
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into operation_conf (id, price_service, country,
+		operator,
+		short_code, local_price,
+		mcc,
+		mnc, keyword,
+		create_user, create_time,
+		update_time,
+		update_user)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.id,jdbcType=BIGINT},
+			#{item.priceService,jdbcType=VARCHAR},
+			#{item.country,jdbcType=VARCHAR},
+			#{item.operator,jdbcType=VARCHAR},
+			#{item.shortCode,jdbcType=VARCHAR},
+			#{item.localPrice,jdbcType=DECIMAL},
+			#{item.mcc,jdbcType=VARCHAR},
+			#{item.mnc,jdbcType=VARCHAR},
+			#{item.keyword,jdbcType=VARCHAR},
+			#{item.createUser,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.updateTime,jdbcType=TIMESTAMP},
+			#{item.updateUser,jdbcType=BIGINT})
+		</foreach>
+	</insert>
+	<insert id="insertSelective" parameterType="com.org.conf.model.OperationConf">
+		insert into operation_conf
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="priceService != null">
+				price_service,
+			</if>
+			<if test="country != null">
+				country,
+			</if>
+			<if test="operator != null">
+				operator,
+			</if>
+			<if test="shortCode != null">
+				short_code,
+			</if>
+			<if test="localPrice != null">
+				local_price,
+			</if>
+			<if test="mcc != null">
+				mcc,
+			</if>
+			<if test="mnc != null">
+				mnc,
+			</if>
+			<if test="keyword != null">
+				keyword,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="priceService != null">
+				#{priceService,jdbcType=VARCHAR},
+			</if>
+			<if test="country != null">
+				#{country,jdbcType=VARCHAR},
+			</if>
+			<if test="operator != null">
+				#{operator,jdbcType=VARCHAR},
+			</if>
+			<if test="shortCode != null">
+				#{shortCode,jdbcType=VARCHAR},
+			</if>
+			<if test="localPrice != null">
+				#{localPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="mcc != null">
+				#{mcc,jdbcType=VARCHAR},
+			</if>
+			<if test="mnc != null">
+				#{mnc,jdbcType=VARCHAR},
+			</if>
+			<if test="keyword != null">
+				#{keyword,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				#{updateUser,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.org.conf.model.OperationConf">
+		update operation_conf
+		<set>
+			<if test="priceService != null">
+				price_service = #{priceService,jdbcType=VARCHAR},
+			</if>
+			<if test="country != null">
+				country = #{country,jdbcType=VARCHAR},
+			</if>
+			<if test="operator != null">
+				operator = #{operator,jdbcType=VARCHAR},
+			</if>
+			<if test="shortCode != null">
+				short_code = #{shortCode,jdbcType=VARCHAR},
+			</if>
+			<if test="localPrice != null">
+				local_price = #{localPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="mcc != null">
+				mcc = #{mcc,jdbcType=VARCHAR},
+			</if>
+			<if test="mnc != null">
+				mnc = #{mnc,jdbcType=VARCHAR},
+			</if>
+			<if test="keyword != null">
+				keyword = #{keyword,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				update_user = #{updateUser,jdbcType=BIGINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.org.conf.model.OperationConf">
+		update
+		operation_conf
+		set price_service = #{priceService,jdbcType=VARCHAR},
+		country = #{country,jdbcType=VARCHAR},
+		operator =
+		#{operator,jdbcType=VARCHAR},
+		short_code =
+		#{shortCode,jdbcType=VARCHAR},
+		local_price =
+		#{localPrice,jdbcType=DECIMAL},
+		mcc = #{mcc,jdbcType=VARCHAR},
+		mnc =
+		#{mnc,jdbcType=VARCHAR},
+		keyword = #{keyword,jdbcType=VARCHAR},
+		create_user = #{createUser,jdbcType=VARCHAR},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
+		update_user =
+		#{updateUser,jdbcType=BIGINT}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="getOperationConfListPage" resultMap="BaseResultMap"
+		parameterType="com.org.conf.model.OperationConf">
+		select
+		<include refid="Base_Column_List" />
+		from operation_conf
+		where 1=1
+		<if test="country != null and country != ''">
+			and country = {country,jdbcType=VARCHAR}
+		</if>
+		<if test="operator != null and operator != ''">
+			operator = #{operator,jdbcType=VARCHAR}
+		</if>
+		<if test="priceService != null and priceService != ''">
+			price_service = #{priceService,jdbcType=VARCHAR}
+		</if>
+		order by create_time desc
+		<if test="showCount != null and currentResult != null">
+			limit
+			#{currentResult,jdbcType=INTEGER},#{showCount,jdbcType=INTEGER}
+		</if>
+
+	</select>
+
+	<select id="geOperationConfCountPage" resultType="java.lang.Long"
+		parameterType="com.org.conf.model.OperationConf">
+		select
+		count(id)
+		from operation_conf
+		where 1=1
+		<if test="country != null and country != ''">
+			and country = {country,jdbcType=VARCHAR}
+		</if>
+		<if test="operator != null and operator != ''">
+			operator = #{operator,jdbcType=VARCHAR}
+		</if>
+		<if test="priceService != null and priceService != ''">
+			price_service = #{priceService,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<select id="getCountryAll" resultMap="DataResultMap">
+		select
+		country as code,
+		country as name,
+		count(distinct country) as count
+		from
+		operation_conf
+		where 1 = 1
+		GROUP BY country
+	</select>
+
+	<select id="getPriceServiceAll" resultMap="DataResultMap">
+		select
+		price_service as
+		code,
+		price_service as name,
+		count(distinct price_service) as count
+		from
+		operation_conf
+		where 1 = 1
+		GROUP BY price_service
+	</select>
+
+	<select id="getOperatorAll" resultMap="DataResultMap">
+		select
+		operator as code,
+		operator as name,
+		count(distinct operator) as count
+		from
+		operation_conf
+		where 1 = 1
+		GROUP BY operator
+	</select>
+
+
+	<select id="getCountryAllByPriceService" resultMap="DataResultMap"
+		parameterType="java.lang.String">
+		select
+		country as code,
+		country as name,
+		count(distinct
+		country) as count
+		from
+		operation_conf
+		where 1 = 1
+		and price_service =
+		#{priceService,jdbcType=VARCHAR}
+		GROUP BY country
+	</select>
+
+
+
+	<select id="getPriceServiceAllByCountry" resultMap="DataResultMap"
+		parameterType="java.lang.String">
+		select
+		price_service as code,
+		price_service as name,
+		count(distinct
+		price_service) as count
+		from operation_conf
+		where 1 = 1
+		and country = #{country,jdbcType=VARCHAR}
+		GROUP BY price_service
+	</select>
+
+
+	<select id="getOperatorAllByCountryAndPservice" resultMap="DataResultMap"
+		parameterType="com.org.conf.model.OperationConf">
+		select
+		operator as code,
+		operator as name,
+		count(distinct operator) as
+		count
+		from
+		operation_conf
+		where 1 = 1
+		<if test="priceService != null and priceService != ''">
+			and price_service = #{priceService,jdbcType=VARCHAR}
+		</if>
+		<if test="country != null">
+			and country = #{country,jdbcType=VARCHAR}
+		</if>
+		GROUP BY operator
+	</select>
+
+	<!-- 不行就用ID 查询 值 -->
+	<select id="getLocalPriceAllByCtryPserviceAndOperator"
+		resultMap="DataResultMap" parameterType="com.org.conf.model.OperationConf">
+		select
+		id as code,
+		local_price as name,
+		count(distinct operator) as
+		count
+		from
+		operation_conf
+		where price_service =
+		#{priceService,jdbcType=VARCHAR}
+		and country = #{country,jdbcType=VARCHAR}
+		and operator = #{operator,jdbcType=VARCHAR}
+		GROUP BY local_price
+	</select>
+</mapper>

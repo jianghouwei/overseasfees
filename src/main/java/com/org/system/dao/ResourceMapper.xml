@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.org.system.dao.ResourceMapper">
+	<resultMap id="BaseResultMap" type="com.org.system.model.Resource">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="level_pid" property="levelPid" jdbcType="INTEGER" />
+		<result column="leve_sort" property="leveSort" jdbcType="INTEGER" />
+		<result column="level_lag" property="levelLag" jdbcType="INTEGER" />
+		<result column="icon_url" property="iconUrl" jdbcType="VARCHAR" />
+		<result column="msg" property="msg" jdbcType="VARCHAR" />
+		
+	</resultMap>
+	
+	<resultMap id="BaseResultRoleIdMap" type="com.org.system.model.Resource" extends="BaseResultMap">
+		<result column="role_id" property="roleId" jdbcType="BIGINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, url, code, name, level_pid, leve_sort, level_lag,msg,
+		icon_url
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from resource
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		resource
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.org.system.model.Resource">
+		insert into resource (id, url,
+		code,
+		name, level_pid, leve_sort,
+		level_lag, icon_url,msg)
+		values
+		(#{id,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{levelPid,jdbcType=INTEGER}, #{leveSort,jdbcType=INTEGER},
+		#{levelLag,jdbcType=INTEGER}, #{iconUrl,jdbcType=VARCHAR},
+		#{msg,jdbcType=VARCHAR})
+		
+	</insert>
+	<insert id="insertSelective" parameterType="com.org.system.model.Resource">
+		insert into resource
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="code != null">
+				code,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="levelPid != null">
+				level_pid,
+			</if>
+			<if test="leveSort != null">
+				leve_sort,
+			</if>
+			<if test="levelLag != null">
+				level_lag,
+			</if>
+			<if test="iconUrl != null">
+				icon_url,
+			</if>
+			<if test="msg != null">
+				msg,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="code != null">
+				#{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="levelPid != null">
+				#{levelPid,jdbcType=INTEGER},
+			</if>
+			<if test="leveSort != null">
+				#{leveSort,jdbcType=INTEGER},
+			</if>
+			<if test="levelLag != null">
+				#{levelLag,jdbcType=INTEGER},
+			</if>
+			<if test="iconUrl != null">
+				#{iconUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="msg != null">
+				#{msg,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.org.system.model.Resource">
+		update resource
+		<set>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="code != null">
+				code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="levelPid != null">
+				level_pid = #{levelPid,jdbcType=INTEGER},
+			</if>
+			<if test="leveSort != null">
+				leve_sort = #{leveSort,jdbcType=INTEGER},
+			</if>
+			<if test="levelLag != null">
+				level_lag = #{levelLag,jdbcType=INTEGER},
+			</if>
+			<if test="iconUrl != null">
+				icon_url = #{iconUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="msg != null">
+				msg = #{msg,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.org.system.model.Resource">
+		update resource
+		set url = #{url,jdbcType=VARCHAR},
+		code = #{code,jdbcType=VARCHAR},
+		name = #{name,jdbcType=VARCHAR},
+		level_pid =
+		#{levelPid,jdbcType=INTEGER},
+		leve_sort = #{leveSort,jdbcType=INTEGER},
+		level_lag = #{levelLag,jdbcType=INTEGER},
+		msg = #{msg,jdbcType=VARCHAR},
+		icon_url =
+		#{iconUrl,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+
+	<select id="getMenusByUserId" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		r.id, r.url, r.code, r.name, r.level_pid,
+		r.leve_sort,
+		r.level_lag, r.icon_url,r.msg
+		from user_role ur
+		LEFT OUTER JOIN
+		permission p on p.role_id = ur.role_id
+		LEFT OUTER JOIN resource r on
+		r.id = p.resource_id and r.level_lag = 3
+		where
+		r.code is not NULL
+		and ur.user_id = #{id,jdbcType=BIGINT}
+		
+	</select>
+
+	<!-- 查询所有菜单  和角色包含菜单  权限分配时候使用 -->
+	<select id="queryPermissionByAll" resultMap="BaseResultRoleIdMap"
+		parameterType="java.lang.Long">
+		SELECT
+		r.id, r.url, r.code, r.name, r.level_pid, r.leve_sort, r.level_lag,
+		r.icon_url,p.role_id ,r.msg
+		from resource r
+		LEFT join permission p on
+		p.resource_id = r.id and p.role_id = #{roleId,jdbcType=BIGINT}
+	</select>
+	
+	<!-- 查询所有资源 资源维护  -->
+	<select id="getResourceAll" resultMap="BaseResultRoleIdMap">
+		select
+		<include refid="Base_Column_List" />
+		from resource
+	</select>
+	<delete id="deleteByPid" parameterType="java.lang.Long">
+		delete from
+		resource
+		where level_pid = #{levelPid,jdbcType=INTEGER},
+	</delete>
+</mapper>

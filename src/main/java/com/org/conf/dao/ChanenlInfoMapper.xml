@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.org.conf.dao.ChanenlInfoMapper">
+	<resultMap id="BaseResultMap" type="com.org.conf.model.ChanenlInfo">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="app_id" property="appId" jdbcType="VARCHAR" />
+		<result column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+		<result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+		<result column="channel_briefing" property="channelBriefing"
+			jdbcType="VARCHAR" />
+		<result column="channel_user" property="channelUser" jdbcType="BIGINT" />
+		<result column="percentage" property="percentage" jdbcType="DECIMAL" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="BIGINT" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="update_user" property="updateUser" jdbcType="BIGINT" />
+	</resultMap>
+	
+	<resultMap type="com.org.conf.model.ChanenlInfo" id="DisResultMap" extends="BaseResultMap">
+			<result column="count" property="count" jdbcType="BIGINT" />
+			<result column="name" property="name" jdbcType="VARCHAR" />
+			
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, app_id, channel_code, channel_name, channel_briefing,
+		channel_user,
+		percentage,
+		create_time, create_user, update_time,
+		update_user
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from chanenl_info
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		chanenl_info
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.org.conf.model.ChanenlInfo">
+		insert into chanenl_info (id,
+		app_id, channel_code,
+		channel_name, channel_briefing, channel_user,
+		percentage, create_time, create_user,
+		update_time, update_user)
+		values
+		(#{id,jdbcType=BIGINT}, #{appId,jdbcType=VARCHAR},
+		#{channelCode,jdbcType=VARCHAR},
+		#{channelName,jdbcType=VARCHAR},
+		#{channelBriefing,jdbcType=VARCHAR}, #{channelUser,jdbcType=BIGINT},
+		#{percentage,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP},
+		#{createUser,jdbcType=BIGINT},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{updateUser,jdbcType=BIGINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.org.conf.model.ChanenlInfo">
+		insert into chanenl_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="appId != null">
+				app_id,
+			</if>
+			<if test="channelCode != null">
+				channel_code,
+			</if>
+			<if test="channelName != null">
+				channel_name,
+			</if>
+			<if test="channelBriefing != null">
+				channel_briefing,
+			</if>
+			<if test="channelUser != null">
+				channel_user,
+			</if>
+			<if test="percentage != null">
+				percentage,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="appId != null">
+				#{appId,jdbcType=VARCHAR},
+			</if>
+			<if test="channelCode != null">
+				#{channelCode,jdbcType=VARCHAR},
+			</if>
+			<if test="channelName != null">
+				#{channelName,jdbcType=VARCHAR},
+			</if>
+			<if test="channelBriefing != null">
+				#{channelBriefing,jdbcType=VARCHAR},
+			</if>
+			<if test="channelUser != null">
+				#{channelUser,jdbcType=BIGINT},
+			</if>
+			<if test="percentage != null">
+				#{percentage,jdbcType=DECIMAL},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=BIGINT},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				#{updateUser,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.org.conf.model.ChanenlInfo">
+		update chanenl_info
+		<set>
+			<if test="appId != null">
+				app_id = #{appId,jdbcType=VARCHAR},
+			</if>
+			<if test="channelCode != null">
+				channel_code = #{channelCode,jdbcType=VARCHAR},
+			</if>
+			<if test="channelName != null">
+				channel_name = #{channelName,jdbcType=VARCHAR},
+			</if>
+			<if test="channelBriefing != null">
+				channel_briefing = #{channelBriefing,jdbcType=VARCHAR},
+			</if>
+			<if test="channelUser != null">
+				channel_user = #{channelUser,jdbcType=BIGINT},
+			</if>
+			<if test="percentage != null">
+				percentage = #{percentage,jdbcType=DECIMAL},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=BIGINT},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				update_user = #{updateUser,jdbcType=BIGINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.org.conf.model.ChanenlInfo">
+		update
+		chanenl_info
+		set app_id = #{appId,jdbcType=VARCHAR},
+		channel_code =
+		#{channelCode,jdbcType=VARCHAR},
+		channel_name =
+		#{channelName,jdbcType=VARCHAR},
+		channel_briefing =
+		#{channelBriefing,jdbcType=VARCHAR},
+		channel_user =
+		#{channelUser,jdbcType=BIGINT},
+		percentage =
+		#{percentage,jdbcType=DECIMAL},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		create_user =
+		#{createUser,jdbcType=BIGINT},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
+		update_user =
+		#{updateUser,jdbcType=BIGINT}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+
+	<select id="getChanenlInfoListPage" resultMap="DisResultMap"
+		parameterType="com.org.conf.model.ChanenlInfo">
+		select
+		ci.id, ci.app_id, ci.channel_code, ci.channel_name, ci.channel_briefing, ci.channel_user,
+		ci.percentage,
+		ci.create_time, ci.create_user, ci.update_time,
+		ci.update_user,
+		ui.name,
+		count(distinct channel_code) as count
+		from chanenl_info ci
+		LEFT JOIN user_info ui on ui.id = ci.channel_user
+		where 1 = 1
+		<if test="channelName != null and channelName != ''">
+			and channel_name like CONCAT(CONCAT('%', #{channelName}),
+			'%')
+		</if>
+		<if test="channelUser != null and channelUser != ''">
+			and channel_user = #{channelUser,jdbcType=BIGINT}
+		</if>
+		GROUP BY channel_code
+		ORDER BY create_time desc
+		<if test="showCount != null and currentResult != null">
+			limit
+			#{currentResult,jdbcType=INTEGER},#{showCount,jdbcType=INTEGER}
+		</if>
+		
+	</select>
+
+	<select id="getChanenlInfoCountPage" resultType="java.lang.Long"
+		parameterType="com.org.conf.model.ChanenlInfo">
+		select
+		count(distinct channel_code)
+		from chanenl_info
+		where 1 = 1
+		<if test="channelName != null and channelName != ''">
+			and channel_name like CONCAT(CONCAT('%', #{channelName}),
+			'%')
+		</if>
+		<if test="channelUser != null and channelUser != ''">
+			and channel_user = #{channelUser,jdbcType=BIGINT}
+		</if>
+	</select>
+</mapper>
